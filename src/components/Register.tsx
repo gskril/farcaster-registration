@@ -127,6 +127,10 @@ export function Register({ recipient }: { recipient: Address }) {
           return <Text>Waiting for transaction to confirm...</Text>
         }
 
+        if (prepare.isError) {
+          console.error(prepare.error)
+        }
+
         return (
           <>
             <Button
@@ -148,7 +152,7 @@ export function Register({ recipient }: { recipient: Address }) {
                   <ExclamationTriangleIcon />
                 </Callout.Icon>
                 <Callout.Text>
-                  Something is wrong, check the console.
+                  Cannot prepare the transaction, check the console.
                 </Callout.Text>
               </Callout.Root>
             )}
