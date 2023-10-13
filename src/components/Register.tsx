@@ -10,12 +10,12 @@ import {
   useContractRead,
 } from 'wagmi'
 
-import {
-  SignatureDomain,
-  SignatureTypes,
-  bundlerContract,
-} from '../contracts/bundler'
+import { bundlerContract } from '../contracts/bundler'
 import { storageRegistryContract } from '../contracts/storage-registry'
+import {
+  SignatureTypes,
+  ID_REGISTRY_EIP_712_DOMAIN,
+} from '../contracts/id-registry'
 
 // ---- start temp code ---- //
 import { createPublicClient, http } from 'viem'
@@ -41,9 +41,9 @@ export function Register({ recipient }: { recipient: Address }) {
   }
 
   const signature = useSignTypedData({
-    domain: SignatureDomain,
+    domain: ID_REGISTRY_EIP_712_DOMAIN,
     types: SignatureTypes,
-    primaryType: 'Registration',
+    primaryType: 'Register',
     message,
   })
 
@@ -57,10 +57,10 @@ export function Register({ recipient }: { recipient: Address }) {
 
       const verified = await publicClient.verifyTypedData({
         address: recipient,
-        domain: SignatureDomain,
+        domain: ID_REGISTRY_EIP_712_DOMAIN,
         message,
         types: SignatureTypes,
-        primaryType: 'Registration',
+        primaryType: 'Register',
         signature: signature.data,
       })
 
