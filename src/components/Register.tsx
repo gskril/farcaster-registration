@@ -9,9 +9,14 @@ import {
   useContractRead,
 } from 'wagmi'
 
-import { bundlerContract } from '../contracts/bundler'
+import {
+  SignatureDomain,
+  SignatureTypes,
+  bundlerContract,
+} from '../contracts/bundler'
 import { storageRegistryContract } from '../contracts/storage-registry'
 
+// ---- start temp code ---- //
 import { createPublicClient, http } from 'viem'
 import { optimism } from 'viem/chains'
 
@@ -19,42 +24,20 @@ const publicClient = createPublicClient({
   chain: optimism,
   transport: http(),
 })
+// ---- end temp code ---- //
 
-type RegisterProps = {
-  recipient: Address
-}
-
-const SignatureTypes = {
-  Registration: [
-    { name: 'to', type: 'address' },
-    { name: 'recovery', type: 'address' },
-    { name: 'nonce', type: 'uint256' },
-    { name: 'deadline', type: 'uint256' },
-  ],
-} as const
-
-const SignatureDomain = {
-  name: 'Farcaster Bundler',
-  version: '1',
-  chainId: 10,
-  verifyingContract: '0x00000000fc94856f3967b047325f88d47bc225d0',
-} as const
-
-export function Register({ recipient }: RegisterProps) {
+export function Register({ recipient }: { recipient: Address }) {
   const deadline = useMemo(
     () => BigInt(Date.now() + 1000 * 60 * 60 * 24 * 7),
     []
   )
 
-  const message = useMemo(
-    () => ({
-      to: recipient,
-      recovery: recipient,
-      nonce: 0n,
-      deadline,
-    }),
-    [deadline, recipient]
-  )
+  const message = {
+    to: recipient,
+    recovery: recipient,
+    nonce: 0n,
+    deadline,
+  }
 
   const signature = useSignTypedData({
     domain: SignatureDomain,
@@ -63,8 +46,9 @@ export function Register({ recipient }: RegisterProps) {
     message,
   })
 
-  // slopily verify the signature to make sure I'm not being dumb
+  // ---- start temp code ---- //
   useEffect(() => {
+    // slopily verify the signature to make sure I'm not being dumb
     async function verify() {
       if (!signature.data) {
         return
@@ -83,7 +67,9 @@ export function Register({ recipient }: RegisterProps) {
     }
 
     verify()
-  }, [message, recipient, signature.data])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signature.data])
+  // ---- end temp code ---- //
 
   const storagePrice = useContractRead({
     ...storageRegistryContract,

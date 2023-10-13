@@ -278,3 +278,19 @@ export const bundlerContract = {
     { stateMutability: 'payable', type: 'receive' },
   ] as const,
 }
+
+export const SignatureTypes = {
+  Registration: [
+    { name: 'to', type: 'address' },
+    { name: 'recovery', type: 'address' },
+    { name: 'nonce', type: 'uint256' },
+    { name: 'deadline', type: 'uint256' },
+  ],
+} as const
+
+export const SignatureDomain = {
+  name: 'Farcaster Bundler',
+  version: '1',
+  chainId: 10,
+  verifyingContract: '0x00000000fc94856f3967b047325f88d47bc225d0',
+} as const
