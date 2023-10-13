@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react'
 import { Button } from '@radix-ui/themes'
 import {
   usePrepareContractWrite,
@@ -10,6 +11,14 @@ import {
 
 import { bundlerContract } from '../contracts/bundler'
 import { storageRegistryContract } from '../contracts/storage-registry'
+
+import { createPublicClient, http } from 'viem'
+import { optimism } from 'viem/chains'
+
+const publicClient = createPublicClient({
+  chain: optimism,
+  transport: http(),
+})
 
 type RegisterProps = {
   recipient: Address
@@ -24,20 +33,57 @@ const SignatureTypes = {
   ],
 } as const
 
-export function Register({ recipient }: RegisterProps) {
-  const sigDeadline = Math.floor(Date.now() / 1000) + 60 * 60
+const SignatureDomain = {
+  name: 'Farcaster Bundler',
+  version: '1',
+  chainId: 10,
+  verifyingContract: '0x00000000fc94856f3967b047325f88d47bc225d0',
+} as const
 
-  const signature = useSignTypedData({
-    message: {
+export function Register({ recipient }: RegisterProps) {
+  const deadline = useMemo(
+    () => BigInt(Date.now() + 1000 * 60 * 60 * 24 * 7),
+    []
+  )
+
+  const message = useMemo(
+    () => ({
       to: recipient,
       recovery: recipient,
       nonce: 0n,
-      deadline: BigInt(sigDeadline),
-    },
-    primaryType: 'Registration',
+      deadline,
+    }),
+    [deadline, recipient]
+  )
+
+  const signature = useSignTypedData({
+    domain: SignatureDomain,
     types: SignatureTypes,
-    domain: {},
+    primaryType: 'Registration',
+    message,
   })
+
+  // slopily verify the signature to make sure I'm not being dumb
+  useEffect(() => {
+    async function verify() {
+      if (!signature.data) {
+        return
+      }
+
+      const verified = await publicClient.verifyTypedData({
+        address: recipient,
+        domain: SignatureDomain,
+        message,
+        types: SignatureTypes,
+        primaryType: 'Registration',
+        signature: signature.data,
+      })
+
+      console.log({ verified })
+    }
+
+    verify()
+  }, [message, recipient, signature.data])
 
   const storagePrice = useContractRead({
     ...storageRegistryContract,
@@ -55,7 +101,7 @@ export function Register({ recipient }: RegisterProps) {
       {
         to: recipient,
         recovery: recipient,
-        deadline: BigInt(sigDeadline),
+        deadline,
         sig: signature.data!,
       }, // registration
       [], // signers
