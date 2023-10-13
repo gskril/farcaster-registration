@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
-import { Button } from '@radix-ui/themes'
+import { Button, Callout, Flex, Text } from '@radix-ui/themes'
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons'
 import {
   usePrepareContractWrite,
   useContractWrite,
@@ -83,6 +84,7 @@ export function Register({ recipient }: { recipient: Address }) {
     functionName: 'register',
     enabled: !!signature.data && !!storagePrice.data,
     value: storagePrice.data,
+    chainId: 10,
     args: [
       {
         to: recipient,
@@ -99,48 +101,60 @@ export function Register({ recipient }: { recipient: Address }) {
   const receipt = useWaitForTransaction(tx.data)
 
   return (
-    <>
+    <Flex direction="column" gap="2" align="center">
       {(() => {
         if (signature.isError) {
-          console.log(signature.error)
-          return <p>Failed to sign message</p>
+          return <Text>Failed to sign message</Text>
         }
 
         if (!signature.data) {
           return (
-            <Button onClick={() => signature.signTypedData?.()}>
-              Authenticate
+            <Button size="3" onClick={() => signature.signTypedData?.()}>
+              Sign Message
             </Button>
           )
         }
 
         if (receipt.isSuccess) {
-          return <p>Success!</p>
+          return <Text>Success!</Text>
         }
 
         if (receipt.isError) {
-          return <p>Transaction failed :/</p>
+          return <Text>Transaction failed :/</Text>
         }
 
         if (receipt.isLoading) {
-          return <p>Waiting for transaction to confirm...</p>
+          return <Text>Waiting for transaction to confirm...</Text>
         }
 
         return (
           <>
+            <Button
+              size="3"
+              onClick={() => tx.write?.()}
+              disabled={!tx.write}
+              style={{ width: 'fit-content' }}
+            >
+              Register{' '}
+              {storagePrice.data
+                ? `for ${(Number(storagePrice.data) / 1e18).toFixed(5)} ETH`
+                : 'Account'}
+            </Button>
+
             {/* We'd expect the button to be writable here, but it's not */}
             {!tx.write && (
-              <p>
-                Signature captured but something is wrong, check the console
-              </p>
+              <Callout.Root color="red" role="alert">
+                <Callout.Icon>
+                  <ExclamationTriangleIcon />
+                </Callout.Icon>
+                <Callout.Text>
+                  Something is wrong, check the console.
+                </Callout.Text>
+              </Callout.Root>
             )}
-
-            <Button onClick={() => tx.write?.()} disabled={!tx.write}>
-              Register
-            </Button>
           </>
         )
       })()}
-    </>
+    </Flex>
   )
 }

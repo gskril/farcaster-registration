@@ -8,8 +8,9 @@ import App from './App.tsx'
 import { chains, wagmiConfig } from './providers.ts'
 
 import './normalize.css'
-import '@radix-ui/themes/styles.css'
 import '@rainbow-me/rainbowkit/styles.css'
+import '@radix-ui/themes/styles.css'
+import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
