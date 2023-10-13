@@ -1,12 +1,15 @@
-import { Container, Flex, Heading } from '@radix-ui/themes'
+import { Container, Flex, Heading, TextField } from '@radix-ui/themes'
 import { useAccount } from 'wagmi'
 
 import { Register } from './components/Register'
 import { ConnectButton } from './components/ConnectButton'
+import { isAddress } from 'viem'
+import { useState } from 'react'
 
 export default function App() {
   const { address } = useAccount()
   const isConnected = !!address
+  const [recipient, setRecipient] = useState('')
 
   return (
     <Container size="2">
@@ -27,17 +30,36 @@ export default function App() {
             align="center"
             color="gray"
           >
-            Includes storage for 1 year
+            Includes 1 year of storage
           </Heading>
         </Flex>
 
-        <ConnectButton />
-
         {(() => {
-          if (!isConnected) return
+          if (!isConnected) {
+            return <ConnectButton />
+          }
 
-          // TODO: add an input for the recipient address
-          return <Register recipient={address} />
+          return (
+            <Flex
+              direction="column"
+              width="100%"
+              gap="3"
+              style={{ maxWidth: '26rem' }}
+            >
+              {isAddress(recipient) ? (
+                <Register connectedAddress={address} recipient={recipient} />
+              ) : (
+                <TextField.Root>
+                  <TextField.Input
+                    aria-label="ETH address of recipient"
+                    placeholder="ETH address of recipient"
+                    size="3"
+                    onChange={(e) => setRecipient(e.target.value)}
+                  />
+                </TextField.Root>
+              )}
+            </Flex>
+          )
         })()}
       </Flex>
     </Container>

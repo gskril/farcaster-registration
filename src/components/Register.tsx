@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Button, Callout, Flex, Text } from '@radix-ui/themes'
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons'
 import {
@@ -10,21 +10,36 @@ import {
   useContractRead,
 } from 'wagmi'
 
-import { bundlerContract } from '../contracts/bundler'
-import { storageRegistryContract } from '../contracts/storage-registry'
+import {
+  bundlerContract,
+  idRegistryContract,
+  storageRegistryContract,
+} from '../contracts'
 import {
   SignatureTypes,
   ID_REGISTRY_EIP_712_DOMAIN,
 } from '../contracts/id-registry'
+import { truncateAddress } from '../utils'
 
-export function Register({ recipient }: { recipient: Address }) {
+type Props = {
+  connectedAddress: Address
+  recipient: Address
+}
+
+export function Register({ connectedAddress, recipient }: Props) {
+  const idOf = useContractRead({
+    ...idRegistryContract,
+    functionName: 'idOf',
+    args: [connectedAddress],
+  })
+
   const deadline = useMemo(
     () => BigInt(Date.now() + 1000 * 60 * 60 * 24 * 7),
     []
   )
 
   const message = {
-    to: recipient,
+    to: connectedAddress,
     recovery: recipient,
     nonce: 0n,
     deadline,
@@ -52,7 +67,7 @@ export function Register({ recipient }: { recipient: Address }) {
     chainId: 10,
     args: [
       {
-        to: recipient,
+        to: connectedAddress,
         recovery: recipient,
         deadline,
         sig: signature.data!,
@@ -68,15 +83,23 @@ export function Register({ recipient }: { recipient: Address }) {
   return (
     <Flex direction="column" gap="2" align="center">
       {(() => {
+        if (idOf.data) {
+          return <Text>You already have an FID (#{Number(idOf.data)})</Text>
+        }
+
         if (signature.isError) {
           return <Text>Failed to sign message</Text>
         }
 
         if (!signature.data) {
           return (
-            <Button size="3" onClick={() => signature.signTypedData?.()}>
-              Sign Message
-            </Button>
+            <>
+              <Button size="3" onClick={() => signature.signTypedData?.()}>
+                Sign Message
+              </Button>
+
+              <Text>Recipient: {truncateAddress(recipient)}</Text>
+            </>
           )
         }
 
@@ -90,10 +113,6 @@ export function Register({ recipient }: { recipient: Address }) {
 
         if (receipt.isLoading) {
           return <Text>Waiting for transaction to confirm...</Text>
-        }
-
-        if (prepare.isError) {
-          console.error(prepare.error)
         }
 
         return (
@@ -110,15 +129,12 @@ export function Register({ recipient }: { recipient: Address }) {
                 : 'Account'}
             </Button>
 
-            {/* We'd expect the button to be writable here, but it's not */}
-            {!tx.write && (
+            {prepare.isError && (
               <Callout.Root color="red" role="alert">
                 <Callout.Icon>
                   <ExclamationTriangleIcon />
                 </Callout.Icon>
-                <Callout.Text>
-                  Cannot prepare the transaction, check the console.
-                </Callout.Text>
+                <Callout.Text>Cannot prepare the transaction</Callout.Text>
               </Callout.Root>
             )}
           </>
