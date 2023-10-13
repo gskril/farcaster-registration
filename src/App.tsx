@@ -22,7 +22,7 @@ export default function App() {
       >
         <Flex direction="column" align="center" gap="1">
           <Heading size={{ initial: '8', sm: '9' }} align="center">
-            Gift a Farcaster Account
+            Register for Farcaster
           </Heading>
           <Heading
             as="h2"
@@ -30,7 +30,7 @@ export default function App() {
             align="center"
             color="gray"
           >
-            Includes 1 year of storage
+            $7 for the first year
           </Heading>
         </Flex>
 
@@ -51,8 +51,7 @@ export default function App() {
               ) : (
                 <TextField.Root>
                   <TextField.Input
-                    aria-label="ETH address of recipient"
-                    placeholder="ETH address of recipient"
+                    placeholder="ETH address for recovery"
                     size="3"
                     onChange={(e) => setRecipient(e.target.value)}
                   />

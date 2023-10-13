@@ -30,7 +30,7 @@ export function ConnectButton() {
               if (!connected) {
                 return (
                   <Button size="3" onClick={openConnectModal}>
-                    Connect Wallet
+                    Connect wallet
                   </Button>
                 )
               }

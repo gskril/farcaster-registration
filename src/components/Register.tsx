@@ -87,16 +87,22 @@ export function Register({ connectedAddress, recipient }: Props) {
           return <Text>You already have an FID (#{Number(idOf.data)})</Text>
         }
 
-        if (signature.isError) {
-          return <Text>Failed to sign message</Text>
-        }
-
         if (!signature.data) {
           return (
             <>
-              <Button size="3" onClick={() => signature.signTypedData?.()}>
-                Sign Message
-              </Button>
+              {signature.isError ? (
+                <Button
+                  size="3"
+                  onClick={() => signature.signTypedData?.()}
+                  color="red"
+                >
+                  Failed to sign, try again
+                </Button>
+              ) : (
+                <Button size="3" onClick={() => signature.signTypedData?.()}>
+                  Sign message
+                </Button>
+              )}
 
               <Text>Recipient: {truncateAddress(recipient)}</Text>
             </>
@@ -126,7 +132,7 @@ export function Register({ connectedAddress, recipient }: Props) {
               Register{' '}
               {storagePrice.data
                 ? `for ${(Number(storagePrice.data) / 1e18).toFixed(5)} ETH`
-                : 'Account'}
+                : 'account'}
             </Button>
 
             {prepare.isError && (
