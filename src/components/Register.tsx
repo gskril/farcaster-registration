@@ -17,16 +17,6 @@ import {
   ID_REGISTRY_EIP_712_DOMAIN,
 } from '../contracts/id-registry'
 
-// ---- start temp code ---- //
-import { createPublicClient, http } from 'viem'
-import { optimism } from 'viem/chains'
-
-const publicClient = createPublicClient({
-  chain: optimism,
-  transport: http(),
-})
-// ---- end temp code ---- //
-
 export function Register({ recipient }: { recipient: Address }) {
   const deadline = useMemo(
     () => BigInt(Date.now() + 1000 * 60 * 60 * 24 * 7),
@@ -46,31 +36,6 @@ export function Register({ recipient }: { recipient: Address }) {
     primaryType: 'Register',
     message,
   })
-
-  // ---- start temp code ---- //
-  useEffect(() => {
-    // slopily verify the signature to make sure I'm not being dumb
-    async function verify() {
-      if (!signature.data) {
-        return
-      }
-
-      const verified = await publicClient.verifyTypedData({
-        address: recipient,
-        domain: ID_REGISTRY_EIP_712_DOMAIN,
-        message,
-        types: SignatureTypes,
-        primaryType: 'Register',
-        signature: signature.data,
-      })
-
-      console.log({ message, signature: signature.data, verified })
-    }
-
-    verify()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signature.data])
-  // ---- end temp code ---- //
 
   const storagePrice = useContractRead({
     ...storageRegistryContract,
