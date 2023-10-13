@@ -63,7 +63,7 @@ export function Register({ recipient }: { recipient: Address }) {
         signature: signature.data,
       })
 
-      console.log({ verified })
+      console.log({ message, signature: signature.data, verified })
     }
 
     verify()
