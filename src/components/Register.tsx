@@ -10,11 +10,7 @@ import {
   useContractRead,
 } from 'wagmi'
 
-import {
-  bundlerContract,
-  idRegistryContract,
-  storageRegistryContract,
-} from '../contracts'
+import { bundlerContract, storageRegistryContract } from '../contracts'
 import {
   SignatureTypes,
   ID_REGISTRY_EIP_712_DOMAIN,
@@ -24,15 +20,16 @@ import { truncateAddress } from '../utils'
 type Props = {
   connectedAddress: Address
   recipient: Address
+  ownedFid: bigint
+  setOwnedFid: (fid: bigint) => void
 }
 
-export function Register({ connectedAddress, recipient }: Props) {
-  const idOf = useContractRead({
-    ...idRegistryContract,
-    functionName: 'idOf',
-    args: [connectedAddress],
-  })
-
+export function Register({
+  connectedAddress,
+  recipient,
+  ownedFid,
+}: // setOwnedFid,
+Props) {
   const deadline = useMemo(
     () => BigInt(Date.now() + 1000 * 60 * 60 * 24 * 7),
     []
@@ -79,12 +76,13 @@ export function Register({ connectedAddress, recipient }: Props) {
 
   const tx = useContractWrite(prepare.config)
   const receipt = useWaitForTransaction(tx.data)
+  // TODO: decode the logs from the transaction receipt to get the newly registered FID and call `setOwnedFid`
 
   return (
     <Flex direction="column" gap="2" align="center">
       {(() => {
-        if (idOf.data) {
-          return <Text>You already have an FID (#{Number(idOf.data)})</Text>
+        if (ownedFid > 0n) {
+          return <Text>You already have an FID (#{Number(ownedFid)})</Text>
         }
 
         if (!signature.data) {

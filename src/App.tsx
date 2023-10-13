@@ -1,15 +1,29 @@
-import { Container, Flex, Heading, TextField } from '@radix-ui/themes'
-import { useAccount } from 'wagmi'
+import { useEffect, useState } from 'react'
+import { Container, Flex, Heading, TextField, Text } from '@radix-ui/themes'
+import { useAccount, useContractRead } from 'wagmi'
+import { isAddress } from 'viem'
 
 import { Register } from './components/Register'
 import { ConnectButton } from './components/ConnectButton'
-import { isAddress } from 'viem'
-import { useState } from 'react'
+import { idRegistryContract } from './contracts'
 
 export default function App() {
   const { address } = useAccount()
   const isConnected = !!address
   const [recipient, setRecipient] = useState('')
+  const [ownedFid, setOwnedFid] = useState<bigint>(0n)
+
+  const idOf = useContractRead({
+    ...idRegistryContract,
+    functionName: 'idOf',
+    args: address ? [address] : undefined,
+  })
+
+  useEffect(() => {
+    if (idOf.data) {
+      setOwnedFid(idOf.data)
+    }
+  }, [idOf])
 
   return (
     <Container size="2">
@@ -39,6 +53,12 @@ export default function App() {
             return <ConnectButton />
           }
 
+          // Transfer flow if the user already has an FID
+          if (ownedFid > 0n) {
+            return <Text>You already have an FID (#{Number(ownedFid)})</Text>
+          }
+
+          // Registration flow if the user doesn't have an FID yet
           return (
             <Flex
               direction="column"
@@ -47,7 +67,12 @@ export default function App() {
               style={{ maxWidth: '26rem' }}
             >
               {isAddress(recipient) ? (
-                <Register connectedAddress={address} recipient={recipient} />
+                <Register
+                  connectedAddress={address}
+                  recipient={recipient}
+                  ownedFid={ownedFid}
+                  setOwnedFid={setOwnedFid}
+                />
               ) : (
                 <TextField.Root>
                   <TextField.Input
