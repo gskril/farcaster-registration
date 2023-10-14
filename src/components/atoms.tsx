@@ -1,8 +1,23 @@
-import { Heading, Helper } from '@ensdomains/thorin'
+import { Heading, Helper, mq } from '@ensdomains/thorin'
 import styled, { css } from 'styled-components'
 
 export const Title = styled(Heading)`
-  font-size: 3rem !important;
+  line-height: 1;
+  font-size: 2.25rem !important;
+
+  ${mq.xs.min(css`
+    font-size: 3rem !important;
+  `)}
+`
+
+export const SubTitle = styled(Heading)`
+  line-height: 1;
+  font-size: 1.5rem;
+  font-weight: 600;
+
+  ${mq.xs.min(css`
+    font-size: 1.875rem;
+  `)}
 `
 
 export const PurpleHelper = styled(Helper)(

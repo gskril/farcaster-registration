@@ -6,7 +6,7 @@ import { useAccount, useEnsName, useNetwork } from 'wagmi'
 
 import { ConnectButton } from '@/components/ConnectButton'
 import { Register } from '@/components/Register'
-import { PurpleHelper, Title } from '@/components/atoms'
+import { PurpleHelper, SubTitle, Title } from '@/components/atoms'
 import { truncateAddress } from '@/lib/utils'
 
 type Props = {
@@ -28,11 +28,11 @@ export default function Sponsor({
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="flex flex-col items-center gap-1">
-        <Title className="text-center">Sponsor a Farcaster Account</Title>
-        <Heading level="2" color="textTertiary">
+      <div className="flex flex-col items-center gap-2">
+        <Title className="text-center">Sponsor a Registration</Title>
+        <SubTitle level="2" color="textTertiary">
           {ensName || truncateAddress(recipient)}
-        </Heading>
+        </SubTitle>
       </div>
 
       {address?.toLowerCase() === recipient.toLowerCase() && (

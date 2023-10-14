@@ -84,6 +84,8 @@ export function Register({ address, deadline, signature }: Props) {
               <p>
                 {prepare.error?.message.includes('insufficient funds for gas')
                   ? 'Insufficient funds'
+                  : prepare.error?.message.includes('0xf90230a9')
+                  ? 'User already has an FID'
                   : 'Error preparing the transaction'}
               </p>
             )}

@@ -16,8 +16,6 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
     []
   )
 
-  console.log(deadline)
-
   const message = {
     to: connectedAddress,
     recovery: connectedAddress,

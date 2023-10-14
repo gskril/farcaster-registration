@@ -6,7 +6,7 @@ import { useAccount, useContractRead, useDisconnect, useNetwork } from 'wagmi'
 
 import { ConnectButton } from '@/components/ConnectButton'
 import { Sign } from '@/components/Sign'
-import { PurpleHelper, Title } from '@/components/atoms'
+import { PurpleHelper, SubTitle, Title } from '@/components/atoms'
 import { idRegistryContract } from '@/contracts'
 
 export default function Home() {
@@ -31,11 +31,11 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="flex flex-col items-center gap-1">
-        <Title>Register for Farcaster</Title>
-        <Heading level="2" color="textTertiary">
+      <div className="flex flex-col items-center gap-2">
+        <Title className="text-center">Register for Farcaster</Title>
+        <SubTitle className="text-center" level="2" color="textTertiary">
           Request a free account
-        </Heading>
+        </SubTitle>
       </div>
 
       {(() => {
