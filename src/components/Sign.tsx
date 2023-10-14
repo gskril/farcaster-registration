@@ -10,8 +10,9 @@ import {
 } from '@/contracts/id-registry'
 
 export function Sign({ connectedAddress }: { connectedAddress: Address }) {
+  // 7 days from now
   const deadline = useMemo(
-    () => BigInt(Date.now() + 1000 * 60 * 60 * 24 * 7),
+    () => BigInt(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7),
     []
   )
 
