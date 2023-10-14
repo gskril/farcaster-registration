@@ -1,7 +1,21 @@
-import { Avatar, Button, Flex, Text } from '@radix-ui/themes'
+import { Button, Profile, mq } from '@ensdomains/thorin'
 import { ConnectButton as ConnectButtonBase } from '@rainbow-me/rainbowkit'
+import styled, { css } from 'styled-components'
+import { useDisconnect } from 'wagmi'
+
+const StyledButton = styled(Button)`
+  ${({ theme }) => css`
+    width: fit-content;
+
+    ${mq.xs.min(css`
+      min-width: ${theme.space['45']};
+    `)}
+  `}
+`
 
 export function ConnectButton() {
+  const { disconnect } = useDisconnect()
+
   return (
     <ConnectButtonBase.Custom>
       {({
@@ -29,66 +43,47 @@ export function ConnectButton() {
             {(() => {
               if (!connected) {
                 return (
-                  <Button size="3" onClick={openConnectModal}>
-                    Connect wallet
-                  </Button>
+                  <StyledButton
+                    shape="rounded"
+                    colorStyle="purplePrimary"
+                    onClick={openConnectModal}
+                  >
+                    Connect
+                  </StyledButton>
                 )
               }
 
               if (chain.unsupported) {
                 return (
-                  <Button size="3" color="red" onClick={openChainModal}>
+                  <StyledButton
+                    shape="rounded"
+                    colorStyle="redPrimary"
+                    onClick={openChainModal}
+                  >
                     Wrong network
-                  </Button>
+                  </StyledButton>
                 )
               }
 
               return (
-                <Button
-                  size="3"
-                  variant="soft"
-                  color="gray"
-                  radius="full"
-                  style={{ height: 'auto', padding: 0 }}
-                  onClick={() => openAccountModal()}
-                >
-                  <Flex
-                    gap="2"
-                    align="center"
-                    pl={account.ensAvatar ? '1' : '3'}
-                    pr="3"
-                    py="1"
-                  >
-                    {account.ensAvatar && (
-                      <Avatar
-                        src={account.ensAvatar}
-                        fallback="ENS"
-                        radius="full"
-                        size="3"
-                      />
-                    )}
-                    <Flex direction="column">
-                      <Text
-                        size="4"
-                        weight="medium"
-                        style={{ color: 'var(--wcm-color-bg-1)' }}
-                      >
-                        {account.ensName ||
-                          `${account.address.slice(
-                            0,
-                            6
-                          )}...${account.address.slice(-4)}`}
-                      </Text>
-
-                      {account.ensName && (
-                        <Text size="1" weight="medium" color="gray">
-                          {account.address.slice(0, 6)}...
-                          {account.address.slice(-4)}
-                        </Text>
-                      )}
-                    </Flex>
-                  </Flex>
-                </Button>
+                <Profile
+                  address={account.address}
+                  ensName={account.ensName || undefined}
+                  avatar={account.ensAvatar || undefined}
+                  onClick={openAccountModal}
+                  dropdownItems={[
+                    {
+                      label: 'Copy Address',
+                      color: 'text',
+                      onClick: () => copyToClipBoard(account.address),
+                    },
+                    {
+                      label: 'Disconnect',
+                      color: 'red',
+                      onClick: () => disconnect(),
+                    },
+                  ]}
+                />
               )
             })()}
           </div>
@@ -96,4 +91,12 @@ export function ConnectButton() {
       }}
     </ConnectButtonBase.Custom>
   )
+}
+
+const copyToClipBoard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text)
+  } catch (err) {
+    console.error('Failed to copy text: ', err)
+  }
 }

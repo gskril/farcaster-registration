@@ -1,19 +1,18 @@
+import { Button, Typography } from '@ensdomains/thorin'
 import { useMemo } from 'react'
-import { Button, Callout, Flex, Text } from '@radix-ui/themes'
-import { ExclamationTriangleIcon } from '@radix-ui/react-icons'
 import {
-  usePrepareContractWrite,
-  useContractWrite,
-  useWaitForTransaction,
   Address,
-  useSignTypedData,
   useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  useSignTypedData,
+  useWaitForTransaction,
 } from 'wagmi'
 
 import { bundlerContract, storageRegistryContract } from '../contracts'
 import {
-  SignatureTypes,
   ID_REGISTRY_EIP_712_DOMAIN,
+  SignatureTypes,
 } from '../contracts/id-registry'
 import { truncateAddress } from '../utils'
 
@@ -27,7 +26,6 @@ type Props = {
 export function Register({
   connectedAddress,
   recipient,
-  ownedFid,
 }: // setOwnedFid,
 Props) {
   const deadline = useMemo(
@@ -79,71 +77,60 @@ Props) {
   // TODO: decode the logs from the transaction receipt to get the newly registered FID and call `setOwnedFid`
 
   return (
-    <Flex direction="column" gap="2" align="center">
+    <div>
       {(() => {
-        if (ownedFid > 0n) {
-          return <Text>You already have an FID (#{Number(ownedFid)})</Text>
-        }
-
         if (!signature.data) {
           return (
-            <>
-              {signature.isError ? (
-                <Button
-                  size="3"
-                  onClick={() => signature.signTypedData?.()}
-                  color="red"
-                >
-                  Failed to sign, try again
-                </Button>
-              ) : (
-                <Button size="3" onClick={() => signature.signTypedData?.()}>
-                  Sign message
-                </Button>
-              )}
+            <div className="grid justify-center text-center gap-2">
+              <Button
+                colorStyle={signature.isError ? 'redPrimary' : 'purplePrimary'}
+                onClick={() => signature.signTypedData?.()}
+              >
+                {signature.isError
+                  ? 'Failed to sign, try again'
+                  : 'Sign Message'}
+              </Button>
 
-              <Text>Recipient: {truncateAddress(recipient)}</Text>
-            </>
+              <Typography>Recipient: {truncateAddress(recipient)}</Typography>
+            </div>
           )
         }
 
         if (receipt.isSuccess) {
-          return <Text>Success!</Text>
+          return <Typography>Success!</Typography>
         }
 
         if (receipt.isError) {
-          return <Text>Transaction failed :/</Text>
+          return <Typography>Transaction failed :/</Typography>
         }
 
         if (receipt.isLoading) {
-          return <Text>Waiting for transaction to confirm...</Text>
+          return <Typography>Waiting for transaction to confirm...</Typography>
         }
 
         return (
-          <>
+          <div className="grid justify-center text-center gap-2">
             <Button
-              size="3"
+              colorStyle={tx.isError ? 'redPrimary' : 'purplePrimary'}
               onClick={() => tx.write?.()}
               disabled={!tx.write}
-              style={{ width: 'fit-content' }}
             >
-              Register{' '}
-              {storagePrice.data
-                ? `for ${(Number(storagePrice.data) / 1e18).toFixed(5)} ETH`
-                : 'account'}
+              {tx.isError ? (
+                <>Failed to register, try again</>
+              ) : (
+                <>
+                  Register{' '}
+                  {storagePrice.data
+                    ? `for ${(Number(storagePrice.data) / 1e18).toFixed(5)} ETH`
+                    : 'account'}
+                </>
+              )}
             </Button>
 
-            {prepare.isError && (
-              <Callout.Root color="red" role="alert">
-                <Callout.Icon>
-                  <ExclamationTriangleIcon />
-                </Callout.Icon>
-                <Callout.Text>Cannot prepare the transaction</Callout.Text>
-              </Callout.Root>
-            )}
-          </>
+            {prepare.isError && <p>Cannot prepare the transaction</p>}
+          </div>
         )
       })()}
-    </Flex>
+    </div>
   )
 }
