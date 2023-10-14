@@ -1,12 +1,11 @@
 'use client'
 
-import { Button, Heading, Input } from '@ensdomains/thorin'
+import { Button, Heading } from '@ensdomains/thorin'
 import { useEffect, useState } from 'react'
-import { isAddress } from 'viem'
 import { useAccount, useContractRead, useDisconnect, useNetwork } from 'wagmi'
 
 import { ConnectButton } from '@/components/ConnectButton'
-import { Register } from '@/components/Register'
+import { Sign } from '@/components/Sign'
 import { PurpleHelper, Title } from '@/components/atoms'
 import { idRegistryContract } from '@/contracts'
 
@@ -16,7 +15,6 @@ export default function Home() {
   const { disconnect } = useDisconnect()
 
   const isConnected = !!address
-  const [recipient, setRecipient] = useState('')
   const [ownedFid, setOwnedFid] = useState<bigint>(0n)
 
   const idOf = useContractRead({
@@ -36,7 +34,7 @@ export default function Home() {
       <div className="flex flex-col items-center gap-1">
         <Title>Register for Farcaster</Title>
         <Heading level="2" color="textTertiary">
-          $7 for the first year
+          Request a free account
         </Heading>
       </div>
 
@@ -45,7 +43,6 @@ export default function Home() {
           return <ConnectButton />
         }
 
-        // Transfer flow if the user already has an FID
         if (ownedFid > 0n) {
           return (
             <div className="flex flex-col items-center gap-2 w-fit">
@@ -63,24 +60,9 @@ export default function Home() {
           )
         }
 
-        // Registration flow if the user doesn't have an FID yet
         return (
           <div style={{ width: '100%', maxWidth: '26rem' }}>
-            {isAddress(recipient) ? (
-              <Register
-                connectedAddress={address}
-                recipient={recipient}
-                ownedFid={ownedFid}
-                setOwnedFid={setOwnedFid}
-              />
-            ) : (
-              <Input
-                label=""
-                hideLabel={true}
-                placeholder="ETH address for recovery"
-                onChange={(e) => setRecipient(e.target.value)}
-              />
-            )}
+            <Sign connectedAddress={address} />
           </div>
         )
       })()}

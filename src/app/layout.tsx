@@ -7,7 +7,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Register for Farcaster',
-  description: 'Create a Farcaster account on OP Mainnet',
+  description: 'Request a free account',
 }
 
 export default function RootLayout({
@@ -19,7 +19,7 @@ export default function RootLayout({
     <html>
       <body>
         <ClientProviders>
-          <div className="flex flex-col justify-center items-center p-6 min-h-screen w-full max-w-xl my-0 mx-auto">
+          <div className="flex flex-col justify-center items-center p-6 min-h-screen w-full max-w-3xl my-0 mx-auto">
             {children}
           </div>
         </ClientProviders>

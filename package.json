@@ -11,13 +11,15 @@
   "dependencies": {
     "@ensdomains/thorin": "^0.6.44",
     "@rainbow-me/rainbowkit": "^1.1.1",
+    "@vercel/kv": "^0.2.3",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
     "react-transition-state": "1.1.5",
     "styled-components": "^6.0.9",
     "viem": "^1.16.5",
-    "wagmi": "^1.4.3"
+    "wagmi": "^1.4.3",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
