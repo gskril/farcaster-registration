@@ -80,7 +80,13 @@ export function Register({ address, deadline, signature }: Props) {
               )}
             </Button>
 
-            {prepare.isError && <p>Cannot prepare the transaction</p>}
+            {prepare.isError && (
+              <p>
+                {prepare.error?.message.includes('insufficient funds for gas')
+                  ? 'Insufficient funds'
+                  : 'Error preparing the transaction'}
+              </p>
+            )}
           </div>
         )
       })()}

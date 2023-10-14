@@ -22,7 +22,7 @@ export default function Sponsor({
 }: Props) {
   const { address } = useAccount()
   const { chain } = useNetwork()
-  const { data: ensName } = useEnsName({ address: recipient })
+  const { data: ensName } = useEnsName({ address: recipient, chainId: 1 })
 
   const isConnected = !!address
 
