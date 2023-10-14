@@ -1,0 +1,26 @@
+{
+  "name": "hardhat-project",
+  "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy:testnet": "hardhat run scripts/deploy.ts --network optimism_testnet",
+    "deploy:mainnet": "hardhat run scripts/deploy.ts --network optimism"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.9",
+    "@nomicfoundation/hardhat-toolbox-viem": "^1.0.0",
+    "@nomicfoundation/hardhat-verify": "^1.1.1",
+    "@nomicfoundation/hardhat-viem": "^1.0.0",
+    "@types/chai": "^4.3.8",
+    "@types/chai-as-promised": "^7.1.6",
+    "@types/mocha": "^10.0.2",
+    "chai": "^4.3.10",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.18.1",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "viem": "^1.16.5"
+  }
+}
