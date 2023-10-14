@@ -1,24 +1,30 @@
 # Gift a Farcaster Account
 
-There are two critical onchain elements to a Farcaster account: fid (free) and storage ($7 in ETH).
+There are two relevant onchain components of a Farcaster account: FID (free) and storage ($7 in ETH). We want to provide an easy way for people to gift both of these to others.
 
-The IDRegistry smart contract don't allow you to freely transfer an fid - the sender is required to have the recipients approval via an EIP-712 typed message. This app provides an easy way to faciliate that process.
+The [IDRegistry](https://optimistic.etherscan.io/address/0x00000000fcaf86937e41ba038b4fa40baa4b780a) doesn't allow FIDs to be transferred freely - the sender is required to have the receivers signature. This app provides an easy way to faciliate that process.
 
 Flow:
 
-- Alice signs a message which creates a request for someone to sponsor their registration fee
-  - This is stored in Vercel KV with Alice's address as the key and the stringified signed message as the value
-- Bob enters the URL `/sponsor/{address}` which has the `registerTo` transaction ready to go
+- Alice signs a message, effectively creating a request for someone to sponsor their registration fee
+  - This is stored in Vercel KV with Alice's address as the key and the stringified signature/deadline as the value
+- Bob enters the URL `/sponsor/{address}` which pulls the necessary signature from KV storage and prepares [Bundler](https://optimistic.etherscan.io/address/0x00000000fc94856f3967b047325f88d47bc225d0) transaction
 
 ## Getting Started
 
-First, install the dependencies:
+Install the dependencies:
 
 ```bash
 yarn install
 ```
 
-Then, run the development server:
+Set the environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Run the development server:
 
 ```bash
 yarn dev

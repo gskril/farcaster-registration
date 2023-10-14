@@ -7,7 +7,7 @@ import { useAccount, useEnsName, useNetwork } from 'wagmi'
 import { ConnectButton } from '@/components/ConnectButton'
 import { Register } from '@/components/Register'
 import { PurpleHelper, Title } from '@/components/atoms'
-import { truncateAddress } from '@/utils'
+import { truncateAddress } from '@/lib/utils'
 
 type Props = {
   address: Address

@@ -27,7 +27,7 @@ export async function createKv(formData: FormData) {
   const { address, deadline, sig } = safeParse.data
 
   try {
-    await kv.set(address, JSON.stringify({ sig, deadline }))
+    await kv.set(address, { sig, deadline })
     return { ok: true, message: address }
   } catch (error) {
     return { ok: false, message: 'Failed to create KV' }
