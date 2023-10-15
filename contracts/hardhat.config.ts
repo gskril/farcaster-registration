@@ -10,13 +10,14 @@ if (!OP_ETHERSCAN_API_KEY) throw new Error('OP_ETHERSCAN_API_KEY must be set')
 
 const config: HardhatUserConfig = {
   networks: {
-    optimism_testnet: {
-      url: 'https://rpc.ankr.com/optimism_testnet',
-      accounts: [DEPLOYER_KEY],
-    },
     optimism: {
       url: 'https://rpc.ankr.com/optimism',
       accounts: [DEPLOYER_KEY],
+    },
+    hardhat: {
+      forking: {
+        url: 'https://rpc.ankr.com/optimism',
+      },
     },
   },
   solidity: {

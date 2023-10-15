@@ -2,8 +2,9 @@
   "name": "hardhat-project",
   "license": "MIT",
   "scripts": {
+    "node": "hardhat node",
     "compile": "hardhat compile",
-    "deploy:testnet": "hardhat run scripts/deploy.ts --network optimism_testnet",
+    "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
     "deploy:mainnet": "hardhat run scripts/deploy.ts --network optimism"
   },
   "devDependencies": {
@@ -22,5 +23,9 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "viem": "^1.16.5"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "^0.8.0",
+    "@openzeppelin/contracts": "^5.0.0"
   }
 }
