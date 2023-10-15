@@ -9,7 +9,7 @@ import {
   useWaitForTransaction,
 } from 'wagmi'
 
-import { bundlerContract, storageRegistryContract } from '../contracts'
+import { gifterContract } from '@/contracts'
 
 type Props = {
   address: Address
@@ -19,13 +19,13 @@ type Props = {
 
 export function Register({ address, deadline, signature }: Props) {
   const storagePrice = useContractRead({
-    ...storageRegistryContract,
+    ...gifterContract,
     functionName: 'price',
     args: [1n],
   })
 
   const prepare = usePrepareContractWrite({
-    ...bundlerContract,
+    ...gifterContract,
     functionName: 'register',
     enabled: !!storagePrice.data,
     value: storagePrice.data,
@@ -39,12 +39,12 @@ export function Register({ address, deadline, signature }: Props) {
       }, // registration
       [], // signers
       1n, // storage units
+      0n, // extra wei
     ],
   })
 
   const tx = useContractWrite(prepare.config)
   const receipt = useWaitForTransaction(tx.data)
-  // TODO: decode the logs from the transaction receipt to get the newly registered FID and call `setOwnedFid`
 
   return (
     <div>
