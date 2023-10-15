@@ -11,7 +11,7 @@ contract FcGifter is Ownable {
     error InvalidPayment();
 
     /* CONSTANTS */
-    uint8 public extraFee;
+    uint8 public feePercentage;
 
     /* IMMUTABLES */
     IBundler public immutable bundler;
@@ -19,12 +19,12 @@ contract FcGifter is Ownable {
 
     /* CONSTRUCTOR */
     constructor(
-        uint8 _extraFee,
+        uint8 _feePercentage,
         address _initialOwner,
         address _bundlerAddress,
         address _storageRegistryAddress
     ) Ownable(_initialOwner) {
-        extraFee = _extraFee;
+        feePercentage = _feePercentage;
         bundler = IBundler(_bundlerAddress);
         storageRegistry = IStorageRegistry(_storageRegistryAddress);
     }
@@ -33,35 +33,61 @@ contract FcGifter is Ownable {
      * @notice Register an fid, multiple signers, and rent storage to an address in a single transaction.
      *
      * @param registration Struct containing registration parameters: to, recovery, deadline, and signature.
-     * @param signers      Array of structs containing signer parameters: keyType, key, metadataType,
-     *                        metadata, deadline, and signature.
-     * @param storageUnits Number of storage units to rent
-     * @param extraEth     Amount of extra ETH to send to cover gas costs.
+     * @param signers      Array of structs containing signer parameters: keyType, key, metadataType, metadata, deadline, and signature.
+     * @param storageUnits Number of storage units to rent.
+     * @param extraWei     Amount of wei to transfer for the purpose of covering future gas gosts.
      *
      */
     function register(
         IBundler.RegistrationParams calldata registration,
         IBundler.SignerParams[] calldata signers,
         uint256 storageUnits,
-        uint256 extraEth
+        uint256 extraWei
     ) external payable {
-        uint256 totalPrice = this.price(storageUnits);
-        if (msg.value < totalPrice) revert InvalidPayment();
+        // Check that the payment covers the base price + fee + extraWei
+        if (msg.value < (this.price(storageUnits) + extraWei)) {
+            revert InvalidPayment();
+        }
 
-        bundler.register(registration, signers, storageUnits);
-        payable(registration.to).transfer(extraEth);
+        // Transfer `extraWei` to the recipient
+        payable(registration.to).transfer(extraWei);
+
+        // Send the base fee + any overpayment to the bundler, which handles registration and refunds
+        // This will leave the fee, adding it to the contract's balance
+        uint256 remainder = msg.value - this.fee(storageUnits) - extraWei;
+        bundler.register{value: remainder}(registration, signers, storageUnits);
     }
 
     /**
      * @notice Calculate the cost in wei to rent the given number of storage units.
      *
      * @param units Number of storage units.
-     * @return uint256 cost in wei.
+     * @return uint256 Cost in wei.
      *
      */
     function price(uint256 units) external view returns (uint256) {
-        uint256 basePrice = storageRegistry.price(units);
-        return basePrice + (basePrice * extraFee) / 100;
+        return storageRegistry.price(units) + this.fee(units);
+    }
+
+    /**
+     * @notice The wei added to each registration
+     *
+     * @param units Number of storage units.
+     * @return uint256 Cost in wei.
+     *
+     */
+    function fee(uint256 units) external view returns (uint256) {
+        return (storageRegistry.price(units) * feePercentage) / 100;
+    }
+
+    /**
+     * @notice Set the fee percentage.
+     *
+     * @param _feePercentage New fee percentage.
+     *
+     */
+    function setFeePercentage(uint8 _feePercentage) external onlyOwner {
+        feePercentage = _feePercentage;
     }
 
     /**
