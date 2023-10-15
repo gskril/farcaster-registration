@@ -1,7 +1,6 @@
 'use client'
 
-import { Button, Heading } from '@ensdomains/thorin'
-import { useEffect, useState } from 'react'
+import { Button } from '@ensdomains/thorin'
 import { useAccount, useContractRead, useDisconnect, useNetwork } from 'wagmi'
 
 import { ConnectButton } from '@/components/ConnectButton'
@@ -15,19 +14,12 @@ export default function Home() {
   const { disconnect } = useDisconnect()
 
   const isConnected = !!address
-  const [ownedFid, setOwnedFid] = useState<bigint>(0n)
 
-  const idOf = useContractRead({
+  const { data: ownedFid } = useContractRead({
     ...idRegistryContract,
     functionName: 'idOf',
     args: address ? [address] : undefined,
   })
-
-  useEffect(() => {
-    if (idOf.data) {
-      setOwnedFid(idOf.data)
-    }
-  }, [idOf])
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -43,7 +35,7 @@ export default function Home() {
           return <ConnectButton />
         }
 
-        if (ownedFid > 0n) {
+        if (ownedFid && ownedFid > 0n) {
           return (
             <div className="flex flex-col items-center gap-2 w-fit">
               <PurpleHelper>
