@@ -41,7 +41,7 @@ export function Register({ address, deadline, signature }: Props) {
       }, // registration
       [], // signers
       1n, // storage units
-      0n, // extra wei
+      extraWei, // extra wei
     ],
   })
 
