@@ -1,7 +1,7 @@
 import { Address } from 'viem'
 
 export const gifterContract = {
-  address: '0x53818Cdc9e41BA289be6C070C962D0da33c12e45' as Address,
+  address: '0x56184a5627523f2062de73f3ac5754e6fc7cc328' as Address,
   abi: [
     {
       inputs: [

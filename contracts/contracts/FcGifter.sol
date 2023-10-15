@@ -52,10 +52,9 @@ contract FcGifter is Ownable {
         // Transfer `extraWei` to the recipient
         payable(registration.to).transfer(extraWei);
 
-        // Send the base fee + any overpayment to the bundler, which handles registration and refunds
-        // This will leave the fee, adding it to the contract's balance
-        uint256 remainder = msg.value - this.fee(storageUnits) - extraWei;
-        bundler.register{value: remainder}(registration, signers, storageUnits);
+        // Send the base fee to the bundler for account registration
+        // This will leave the fee (and overpayment), adding it to the contract's balance
+        bundler.register{value: storageRegistry.price(storageUnits)}(registration, signers, storageUnits);
     }
 
     /**
