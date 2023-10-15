@@ -18,6 +18,8 @@ type Props = {
 }
 
 export function Register({ address, deadline, signature }: Props) {
+  const extraWei = 60000000000000n
+
   const storagePrice = useContractRead({
     ...gifterContract,
     functionName: 'price',
@@ -28,7 +30,7 @@ export function Register({ address, deadline, signature }: Props) {
     ...gifterContract,
     functionName: 'register',
     enabled: !!storagePrice.data,
-    value: storagePrice.data,
+    value: storagePrice.data ? storagePrice.data + extraWei : undefined,
     chainId: 10,
     args: [
       {
