@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Address } from 'viem'
 
 const ID_REGISTRY_REGISTER_TYPE = [
@@ -11,12 +12,18 @@ export const SignatureTypes = {
   Register: ID_REGISTRY_REGISTER_TYPE,
 }
 
-export const ID_REGISTRY_EIP_712_DOMAIN = {
-  name: 'Farcaster IdRegistry',
-  version: '1',
-  chainId: 10,
-  verifyingContract: '0x00000000fcaf86937e41ba038b4fa40baa4b780a',
-} as const
+export function useIdRegistryEip712Domain(chainId: number | undefined) {
+  return useMemo(
+    () =>
+      ({
+        name: 'Farcaster IdRegistry',
+        version: '1',
+        chainId: chainId ?? 10,
+        verifyingContract: '0x00000000fcaf86937e41ba038b4fa40baa4b780a',
+      }) as const,
+    [chainId]
+  )
+}
 
 export const idRegistryContract = {
   address: '0x00000000FcAf86937e41bA038B4fA40BAA4B780A' as Address,

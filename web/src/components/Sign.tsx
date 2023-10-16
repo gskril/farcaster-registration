@@ -1,15 +1,18 @@
 import { Button } from '@ensdomains/thorin'
 import { redirect } from 'next/navigation'
 import { useMemo } from 'react'
-import { Address, useSignTypedData } from 'wagmi'
+import { Address, useNetwork, useSignTypedData } from 'wagmi'
 
 import { createKv } from '@/actions/createKv'
 import {
-  ID_REGISTRY_EIP_712_DOMAIN,
   SignatureTypes,
+  useIdRegistryEip712Domain,
 } from '@/contracts/id-registry'
 
 export function Sign({ connectedAddress }: { connectedAddress: Address }) {
+  const { chain } = useNetwork()
+  const ID_REGISTRY_EIP_712_DOMAIN = useIdRegistryEip712Domain(chain?.id)
+
   // 7 days from now
   const deadline = useMemo(
     () => BigInt(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7),

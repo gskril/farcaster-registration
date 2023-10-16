@@ -5,11 +5,12 @@ import {
   Address,
   useContractRead,
   useContractWrite,
+  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from 'wagmi'
 
-import { gifterContract } from '@/contracts'
+import { useGifterContract } from '@/contracts'
 
 type Props = {
   address: Address
@@ -18,6 +19,9 @@ type Props = {
 }
 
 export function Register({ address, deadline, signature }: Props) {
+  const { chain } = useNetwork()
+  const gifterContract = useGifterContract(chain?.id)
+
   const extraWei = 60000000000000n
 
   const { data: storagePrice } = useContractRead({
