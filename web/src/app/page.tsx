@@ -37,7 +37,7 @@ export default function Home() {
 
         if (ownedFid && ownedFid > 0n) {
           return (
-            <div className="flex flex-col items-center gap-2 w-fit">
+            <div className="flex flex-col items-center gap-4 w-fit">
               <PurpleHelper>
                 You already have an FID (#{Number(ownedFid)})
               </PurpleHelper>

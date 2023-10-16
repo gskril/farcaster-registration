@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Typography } from '@ensdomains/thorin'
+import { Button, Helper, Typography } from '@ensdomains/thorin'
 import {
   Address,
   useContractRead,
@@ -12,13 +12,16 @@ import {
 
 import { useGifterContract } from '@/contracts'
 
+import { PurpleHelper } from './atoms'
+
 type Props = {
+  name: string
   address: Address
   deadline: bigint
   signature: Address
 }
 
-export function Register({ address, deadline, signature }: Props) {
+export function Register({ name, address, deadline, signature }: Props) {
   const { chain } = useNetwork()
   const gifterContract = useGifterContract(chain?.id)
 
@@ -55,15 +58,27 @@ export function Register({ address, deadline, signature }: Props) {
     <div>
       {(() => {
         if (receipt.isSuccess) {
-          return <Typography>Success!</Typography>
+          return (
+            <div className="grid gap-4">
+              <PurpleHelper>
+                Success! {name} can now use their account with a range of
+                clients
+              </PurpleHelper>
+
+              <Button
+                as="a"
+                href="https://www.farcaster.xyz/apps"
+                target="_blank"
+                colorStyle="purplePrimary"
+              >
+                Explore the ecosystem
+              </Button>
+            </div>
+          )
         }
 
         if (receipt.isError) {
-          return <Typography>Transaction failed :/</Typography>
-        }
-
-        if (receipt.isLoading) {
-          return <Typography>Waiting for transaction to confirm...</Typography>
+          return <Helper type="error">Transaction failed :/</Helper>
         }
 
         return (
@@ -71,17 +86,15 @@ export function Register({ address, deadline, signature }: Props) {
             <Button
               colorStyle={tx.isError ? 'redPrimary' : 'purplePrimary'}
               onClick={() => tx.write?.()}
-              disabled={!tx.write}
+              loading={tx.isLoading || receipt.isLoading}
+              disabled={!tx.write || tx.isLoading || receipt.isLoading}
             >
               {tx.isError ? (
                 <>Failed to register, try again</>
+              ) : receipt.isLoading ? (
+                <>Transaction processing</>
               ) : (
-                <>
-                  Register{' '}
-                  {storagePrice
-                    ? `for ${(Number(storagePrice) / 1e18).toFixed(5)} ETH`
-                    : 'account'}
-                </>
+                <>Register for ~$7.77</>
               )}
             </Button>
 

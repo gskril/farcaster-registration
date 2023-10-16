@@ -34,11 +34,11 @@ export default function Sponsor({
   const isConnected = !!address
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex flex-col items-center gap-2">
-        <Title className="text-center">Sponsor a Registration</Title>
+    <div className="flex flex-col items-center gap-8">
+      <div className="grid items-center gap-3 text-center">
+        <Title>Gift a Farcaster account</Title>
         <SubTitle level="2" color="textTertiary">
-          {ensName || truncateAddress(recipient)}
+          Give {ensName || truncateAddress(recipient)} one year free
         </SubTitle>
       </div>
 
@@ -56,7 +56,7 @@ export default function Sponsor({
 
         if (ownedFid && ownedFid > 0n) {
           return (
-            <div className="flex flex-col items-center gap-2 w-fit">
+            <div className="w-fit">
               <PurpleHelper>
                 This address already has an account (FID #{Number(ownedFid)})
               </PurpleHelper>
@@ -67,6 +67,7 @@ export default function Sponsor({
         return (
           <div style={{ width: '100%', maxWidth: '26rem' }}>
             <Register
+              name={ensName || truncateAddress(recipient)}
               address={recipient}
               deadline={deadline}
               signature={signature}

@@ -5,7 +5,7 @@ import { Address, useEnsName } from 'wagmi'
 
 export function Content({ keys }: { keys: string[] }) {
   return (
-    <div className="flex flex-col gap-2 max-w-full">
+    <div className="flex flex-col gap-4 max-w-full">
       {keys.map((key) => {
         return <Key key={key} address={key} />
       })}
