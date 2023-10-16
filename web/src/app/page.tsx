@@ -24,9 +24,9 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center gap-8">
       <div className="grid items-center gap-3 text-center">
-        <Title>Get a Farcaster account</Title>
+        <Title>GiftCaster</Title>
         <SubTitle as="h2" color="textTertiary">
-          Does somebody want to have you on Farcaster?
+          Sign up to have your Farcaster registration paid for by a friend
         </SubTitle>
       </div>
 

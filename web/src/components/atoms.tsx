@@ -15,6 +15,7 @@ export const SubTitle = styled(Heading)(
   ({ theme }) => css`
     line-height: 1;
     font-size: 1.25rem;
+    line-height: 1.2;
     font-weight: 500;
     color: ${theme.colors.textTertiary};
   `
