@@ -12,7 +12,7 @@ const formSchema = z.object({
   sig: z.string(),
 })
 
-export async function createKv(formData: FormData) {
+export async function createKv(prevState: any, formData: FormData) {
   const safeParse = formSchema.safeParse({
     address: formData.get('address'),
     deadline: formData.get('deadline'),

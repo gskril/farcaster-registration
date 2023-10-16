@@ -22,11 +22,11 @@ export default function Home() {
   })
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex flex-col items-center gap-2">
-        <Title className="text-center">Register for Farcaster</Title>
-        <SubTitle className="text-center" level="2" color="textTertiary">
-          Request a free account
+    <div className="flex flex-col items-center gap-8">
+      <div className="grid items-center gap-3 text-center">
+        <Title>Get a Farcaster account</Title>
+        <SubTitle as="h2" color="textTertiary">
+          Does somebody want to have you on Farcaster?
         </SubTitle>
       </div>
 
@@ -53,7 +53,7 @@ export default function Home() {
         }
 
         return (
-          <div style={{ width: '100%', maxWidth: '26rem' }}>
+          <div className="w-full max-w-xs">
             <Sign connectedAddress={address} />
           </div>
         )

@@ -1,6 +1,8 @@
-import { Button } from '@ensdomains/thorin'
-import { redirect } from 'next/navigation'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+// @ts-ignore
+import { experimental_useFormState as useFormState } from 'react-dom'
+// @ts-ignore
+import { experimental_useFormStatus as useFormStatus } from 'react-dom'
 import { Address, useNetwork, useSignTypedData } from 'wagmi'
 
 import { createKv } from '@/actions/createKv'
@@ -8,6 +10,15 @@ import {
   SignatureTypes,
   useIdRegistryEip712Domain,
 } from '@/contracts/id-registry'
+import { copyToClipBoard } from '@/lib/utils'
+
+import { Step } from './Step'
+import { PurpleHelper } from './atoms'
+
+const initialState = {
+  ok: false,
+  message: '',
+}
 
 export function Sign({ connectedAddress }: { connectedAddress: Address }) {
   const { chain } = useNetwork()
@@ -33,43 +44,77 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
     message,
   })
 
-  async function handleCreateKv(formData: FormData) {
-    const { ok, message } = await createKv(formData)
-
-    if (!ok) {
-      return alert(message)
-    }
-
-    return redirect(`/sponsor/${message}`)
-  }
+  const [formState, formAction] = useFormState(createKv, initialState)
+  const [copiedToClipboard, setCopiedToClipboard] = useState(false)
 
   return (
-    <div>
-      {(() => {
-        if (signature.data) {
-          return (
-            <form action={handleCreateKv} className="grid justify-center">
-              <input type="hidden" name="address" value={connectedAddress} />
-              <input type="hidden" name="deadline" value={Number(deadline)} />
-              <input type="hidden" name="sig" value={signature.data} />
-              <Button colorStyle="purplePrimary" type="submit">
-                Save request
-              </Button>
-            </form>
-          )
+    <div className="grid gap-4 w-full">
+      <Step
+        state={
+          !!signature.data
+            ? 'complete'
+            : signature.isLoading
+            ? 'loading'
+            : 'active'
         }
+        label="Sign message"
+        onClick={() => signature.signTypedData?.()}
+      />
 
-        return (
-          <div className="grid justify-center text-center gap-2">
-            <Button
-              colorStyle={signature.isError ? 'redPrimary' : 'purplePrimary'}
-              onClick={() => signature.signTypedData?.()}
-            >
-              {signature.isError ? 'Failed to sign, try again' : 'Sign Message'}
-            </Button>
-          </div>
-        )
-      })()}
+      <form action={formAction}>
+        <input type="hidden" name="address" value={connectedAddress} />
+        <input type="hidden" name="deadline" value={Number(deadline)} />
+        <input type="hidden" name="sig" value={signature.data} />
+
+        <SubmitButton formState={formState} signature={signature.data} />
+      </form>
+
+      <Step
+        state={
+          copiedToClipboard ? 'complete' : formState.ok ? 'active' : 'disabled'
+        }
+        label="Copy URL"
+        onClick={async () => {
+          await copyToClipBoard(
+            `https://farcaster-registration.vercel.app/sponsor/${formState.message}`
+          )
+          setCopiedToClipboard(true)
+        }}
+      />
+
+      {copiedToClipboard && (
+        <PurpleHelper className="max-w-sm">
+          Send the copied URL to the person who's paying your Farcaster account
+        </PurpleHelper>
+      )}
     </div>
+  )
+}
+
+function SubmitButton({
+  signature,
+  formState,
+}: {
+  signature: Address | undefined
+  formState: typeof initialState
+}) {
+  const { pending } = useFormStatus()
+
+  return (
+    <Step
+      state={
+        formState.ok
+          ? 'complete'
+          : pending
+          ? 'loading'
+          : !!signature
+          ? 'active'
+          : 'disabled'
+      }
+      label="Save message"
+      onClick={() => {}}
+      type="submit"
+      aria-disabled={pending}
+    />
   )
 }

@@ -3,6 +3,8 @@ import { ConnectButton as ConnectButtonBase } from '@rainbow-me/rainbowkit'
 import styled, { css } from 'styled-components'
 import { useDisconnect } from 'wagmi'
 
+import { copyToClipBoard } from '@/lib/utils'
+
 const StyledButton = styled(Button)`
   ${({ theme }) => css`
     width: fit-content;
@@ -91,12 +93,4 @@ export function ConnectButton() {
       }}
     </ConnectButtonBase.Custom>
   )
-}
-
-const copyToClipBoard = async (text: string) => {
-  try {
-    await navigator.clipboard.writeText(text)
-  } catch (err) {
-    console.error('Failed to copy text: ', err)
-  }
 }
