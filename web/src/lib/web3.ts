@@ -7,9 +7,17 @@ const devChains = process.env.NEXT_PUBLIC_TESTNETS === 'true' ? [hardhat] : []
 
 export const chains = [optimism, mainnet, ...devChains]
 
-export const { publicClient, webSocketPublicClient } = configureChains(chains, [
-  publicProvider(),
-])
+export const { publicClient, webSocketPublicClient } = configureChains(
+  chains,
+  [publicProvider()],
+  {
+    batch: {
+      multicall: {
+        batchSize: 2_048,
+      },
+    },
+  }
+)
 
 const { connectors } = getDefaultWallets({
   appName: 'Farcaster Registration',
