@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { experimental_useFormState as useFormState } from 'react-dom'
 // @ts-ignore
 import { experimental_useFormStatus as useFormStatus } from 'react-dom'
+import QRCode from 'react-qr-code'
 import { Address, useNetwork, useSignTypedData } from 'wagmi'
 
 import { createKv } from '@/actions/createKv'
@@ -47,8 +48,10 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
   const [formState, formAction] = useFormState(createKv, initialState)
   const [copiedToClipboard, setCopiedToClipboard] = useState(false)
 
+  const urlToSponsorPage = `https://farcaster-registration.vercel.app/sponsor/${formState.message}`
+
   return (
-    <div className="grid gap-4 w-full">
+    <div className="flex flex-col gap-4 items-center w-full">
       <Step
         state={
           !!signature.data
@@ -61,7 +64,7 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
         onClick={() => signature.signTypedData?.()}
       />
 
-      <form action={formAction}>
+      <form action={formAction} className="w-full">
         <input type="hidden" name="address" value={connectedAddress} />
         <input type="hidden" name="deadline" value={Number(deadline)} />
         <input type="hidden" name="sig" value={signature.data} />
@@ -75,17 +78,26 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
         }
         label="Copy URL"
         onClick={async () => {
-          await copyToClipBoard(
-            `https://farcaster-registration.vercel.app/sponsor/${formState.message}`
-          )
+          await copyToClipBoard(urlToSponsorPage)
           setCopiedToClipboard(true)
         }}
       />
 
       {copiedToClipboard && (
-        <PurpleHelper className="max-w-sm">
-          Send the copied URL to the person who's paying your Farcaster account
-        </PurpleHelper>
+        <div className="flex gap-2 items-center flex-col sm:flex-row">
+          <PurpleHelper className="max-w-sm" showIcon={false}>
+            Share the URL with the person who's paying for your account
+          </PurpleHelper>
+
+          <div className="bg-white p-1 rounded-md max-w-[10rem]">
+            <QRCode
+              size={256}
+              viewBox={`0 0 256 256`}
+              style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
+              value={urlToSponsorPage}
+            />
+          </div>
+        </div>
       )}
     </div>
   )

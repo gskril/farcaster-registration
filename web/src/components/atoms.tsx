@@ -24,12 +24,19 @@ export const SubTitle = styled(Heading)(
   `
 )
 
-export const PurpleHelper = styled(Helper)(
-  ({ theme }) => css`
+export const PurpleHelper = styled(Helper)<{ showIcon?: boolean }>(
+  ({ theme, showIcon = true }) => css`
     border-color: ${theme.colors.purple};
     background-color: hsl(280 62% 90% / 10%);
 
+    ${showIcon &&
+    css`
+      padding-top: ${theme.space['4']};
+      padding-bottom: ${theme.space['4']};
+    `}
+
     svg {
+      display: ${showIcon ? 'block' : 'none'};
       color: ${theme.colors.purple};
     }
   `
