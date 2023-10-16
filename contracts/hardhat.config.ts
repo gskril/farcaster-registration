@@ -39,6 +39,9 @@ const config: HardhatUserConfig = {
       optimisticEthereum: OP_ETHERSCAN_API_KEY,
     },
   },
+  paths: {
+    sources: './src',
+  },
 }
 
 export default config
