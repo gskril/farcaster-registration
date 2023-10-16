@@ -22,7 +22,7 @@ export default function RootLayout({
           <div
             className="flex flex-col justify-center items-center p-6 min-h-screen w-full max-w-3xl my-0 mx-auto"
             style={{
-              maxHeight: '100svh', // safe view height, tailwind doesn't support it
+              minHeight: '100svh', // safe view height, tailwind doesn't support it
             }}
           >
             {children}
