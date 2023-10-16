@@ -60,7 +60,7 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
             ? 'loading'
             : 'active'
         }
-        label="Sign message"
+        label="1. Sign message"
         onClick={() => signature.signTypedData?.()}
       />
 
@@ -76,7 +76,7 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
         state={
           copiedToClipboard ? 'complete' : formState.ok ? 'active' : 'disabled'
         }
-        label="Copy URL"
+        label="3. Share with your gifter"
         onClick={async () => {
           await copyToClipBoard(urlToSponsorPage)
           setCopiedToClipboard(true)
@@ -84,12 +84,12 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
       />
 
       {copiedToClipboard && (
-        <div className="flex gap-2 items-center flex-col sm:flex-row">
-          <PurpleHelper className="max-w-sm" showIcon={false}>
-            Share the URL with the person who's paying for your account
+        <div className="flex flex-col gap-2 items-center w-full">
+          <PurpleHelper showIcon={false}>
+            Share the copied URL or this QR code
           </PurpleHelper>
 
-          <div className="bg-white p-1 rounded-md max-w-[10rem]">
+          <div className="bg-white p-1 rounded-sm max-w-[10rem]">
             <QRCode
               size={256}
               viewBox={`0 0 256 256`}
@@ -123,7 +123,7 @@ function SubmitButton({
           ? 'active'
           : 'disabled'
       }
-      label="Save message"
+      label="2. Save response"
       onClick={() => {}}
       type="submit"
       aria-disabled={pending}

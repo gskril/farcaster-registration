@@ -53,7 +53,7 @@ export default function Home() {
         }
 
         return (
-          <div className="w-full max-w-xs">
+          <div className="w-full max-w-sm">
             <Sign connectedAddress={address} />
           </div>
         )

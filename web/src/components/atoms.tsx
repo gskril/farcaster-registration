@@ -17,10 +17,6 @@ export const SubTitle = styled(Heading)(
     font-size: 1.25rem;
     font-weight: 500;
     color: ${theme.colors.textTertiary};
-
-    ${mq.xs.min(css`
-      /* font-size: 1.5rem; */
-    `)}
   `
 )
 
@@ -29,7 +25,7 @@ export const PurpleHelper = styled(Helper)<{ showIcon?: boolean }>(
     border-color: ${theme.colors.purple};
     background-color: hsl(280 62% 90% / 10%);
 
-    ${showIcon &&
+    ${showIcon === false &&
     css`
       padding-top: ${theme.space['4']};
       padding-bottom: ${theme.space['4']};
