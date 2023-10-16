@@ -61,17 +61,17 @@ export function Register({ name, address, deadline, signature }: Props) {
           return (
             <div className="grid gap-4">
               <PurpleHelper>
-                Success! {name} can now use their account with a range of
-                clients
+                Success! {name} can now use their account with a client like
+                flink
               </PurpleHelper>
 
               <Button
                 as="a"
-                href="https://www.farcaster.xyz/apps"
+                href="https://flink.fyi/"
                 target="_blank"
                 colorStyle="purplePrimary"
               >
-                Explore the ecosystem
+                Go to flink
               </Button>
             </div>
           )
