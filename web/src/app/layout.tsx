@@ -9,6 +9,56 @@ export const metadata: Metadata = {
   title: 'Get a Farcaster Account',
   description:
     'Sign up to have your Farcaster registration paid for by a friend',
+  icons: [
+    {
+      rel: 'icon',
+      sizes: '32x32',
+      media: '(prefers-color-scheme: dark)',
+      url: './favicon/32-light.png',
+    },
+    {
+      rel: 'icon',
+      sizes: '64x64',
+      media: '(prefers-color-scheme: dark)',
+      url: './favicon/64-light.png',
+    },
+    {
+      rel: 'icon',
+      sizes: '128x128',
+      media: '(prefers-color-scheme: dark)',
+      url: './favicon/128-light.png',
+    },
+    {
+      rel: 'icon',
+      sizes: '256x256',
+      media: '(prefers-color-scheme: dark)',
+      url: './favicon/256-light.png',
+    },
+    {
+      rel: 'icon',
+      sizes: '32x32',
+      media: '(prefers-color-scheme: light)',
+      url: './favicon/32-dark.png',
+    },
+    {
+      rel: 'icon',
+      sizes: '64x64',
+      media: '(prefers-color-scheme: light)',
+      url: './favicon/64-dark.png',
+    },
+    {
+      rel: 'icon',
+      sizes: '128x128',
+      media: '(prefers-color-scheme: light)',
+      url: './favicon/128-dark.png',
+    },
+    {
+      rel: 'icon',
+      sizes: '256x256',
+      media: '(prefers-color-scheme: light)',
+      url: './favicon/256-dark.png',
+    },
+  ],
   openGraph: {
     images: ['/sharing.jpg'],
   },
