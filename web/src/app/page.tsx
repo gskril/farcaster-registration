@@ -23,8 +23,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center gap-8">
-      <div className="grid items-center gap-3 text-center">
-        <Title>GiftCaster</Title>
+      <div className="grid items-center gap-4 text-center">
+        <Title>Get a Farcaster account</Title>
         <SubTitle as="h2" color="textTertiary">
           Sign up to have your Farcaster registration paid for by a friend
         </SubTitle>

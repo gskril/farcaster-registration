@@ -48,7 +48,7 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
   const [formState, formAction] = useFormState(createKv, initialState)
   const [copiedToClipboard, setCopiedToClipboard] = useState(false)
 
-  const urlToSponsorPage = `https://farcaster-registration.vercel.app/sponsor/${formState.message}`
+  const urlToSponsorPage = `https://gift.fcstr.xyz/sponsor/${formState.message}`
 
   return (
     <div className="flex flex-col gap-4 items-center w-full">

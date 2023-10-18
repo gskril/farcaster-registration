@@ -26,6 +26,7 @@ function Key({ address }: { address: Address }) {
     ...idRegistryContract,
     functionName: 'idOf',
     args: [address],
+    chainId: 10,
   })
 
   return (

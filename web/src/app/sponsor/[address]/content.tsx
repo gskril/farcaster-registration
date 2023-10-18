@@ -35,7 +35,7 @@ export default function Sponsor({
 
   return (
     <div className="flex flex-col items-center gap-8">
-      <div className="grid items-center gap-3 text-center">
+      <div className="grid items-center gap-4 text-center">
         <Title>Gift a Farcaster account</Title>
         <SubTitle level="2" color="textTertiary">
           Give {ensName || truncateAddress(recipient)} one year free

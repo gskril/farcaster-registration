@@ -6,8 +6,12 @@ import { ClientProviders } from '@/lib/providers'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Register for Farcaster',
-  description: 'Request a free account',
+  title: 'Get a Farcaster Account',
+  description:
+    'Sign up to have your Farcaster registration paid for by a friend',
+  openGraph: {
+    images: ['/sharing.jpg'],
+  },
 }
 
 export default function RootLayout({

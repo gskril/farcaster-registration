@@ -5,7 +5,7 @@ import { Address, isAddress } from 'viem'
 import Sponsor from './content'
 
 export const metadata: Metadata = {
-  title: 'Sponsor a Farcaster Registration',
+  title: 'Gift a Farcaster Account',
   description: "Pay for someone else's first year on Farcaster",
 }
 
