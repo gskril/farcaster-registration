@@ -1,3 +1,4 @@
+import { lightTheme } from '@ensdomains/thorin'
 import { usePlausible } from 'next-plausible'
 import { useMemo, useState } from 'react'
 // @ts-ignore
@@ -89,7 +90,19 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
       {copiedToClipboard && (
         <div className="flex flex-col gap-2 items-center w-full">
           <PurpleHelper showIcon={false}>
-            Share the copied URL or this QR code
+            <span>
+              Share the{' '}
+              <a
+                href={urlToSponsorPage}
+                style={{
+                  color: lightTheme.colors.purplePrimary,
+                  textDecoration: 'underline',
+                }}
+              >
+                copied URL
+              </a>{' '}
+              or this QR code
+            </span>
           </PurpleHelper>
 
           <div className="bg-white p-1 rounded-sm max-w-[10rem]">

@@ -1,6 +1,7 @@
 'use client'
 
-import { Heading } from '@ensdomains/thorin'
+import { usePathname } from 'next/navigation'
+import QRCode from 'react-qr-code'
 import { Address } from 'viem'
 import { useAccount, useContractRead, useEnsName, useNetwork } from 'wagmi'
 
@@ -25,6 +26,9 @@ export default function Sponsor({
   const { chain } = useNetwork()
   const { data: ensName } = useEnsName({ address: recipient, chainId: 1 })
 
+  const hostname = 'https://gift.fcstr.xyz'
+  const pathname = usePathname()
+
   const { data: ownedFid } = useContractRead({
     ...idRegistryContract,
     functionName: 'idOf',
@@ -44,8 +48,19 @@ export default function Sponsor({
 
       {address?.toLowerCase() === recipient.toLowerCase() && (
         <PurpleHelper className="max-w-sm">
-          Send this page to the person you want to sponsor your Farcaster
-          account registration
+          <span>
+            Send this page to the person you want to sponsor your Farcaster
+            account registration
+          </span>
+
+          <div className="bg-white p-1 rounded-sm max-w-[10rem]">
+            <QRCode
+              size={256}
+              viewBox={`0 0 256 256`}
+              style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
+              value={hostname + pathname}
+            />
+          </div>
         </PurpleHelper>
       )}
 
