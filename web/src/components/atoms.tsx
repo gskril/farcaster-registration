@@ -36,7 +36,7 @@ export const PurpleHelper = styled(Helper)<{ showIcon?: boolean }>(
       padding-bottom: ${theme.space['4']};
     `}
 
-    svg {
+    & > svg {
       display: ${showIcon ? 'block' : 'none'};
       color: ${theme.colors.purple};
     }

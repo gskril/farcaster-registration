@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@ensdomains/thorin'
 import { usePathname } from 'next/navigation'
 import QRCode from 'react-qr-code'
 import { Address } from 'viem'
@@ -37,8 +38,11 @@ export default function Sponsor({
 
   const isConnected = !!address
 
+  // prettier-ignore
+  const viewerRequesterMatch = address?.toLowerCase() === recipient.toLowerCase()
+
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="flex flex-col items-center gap-6">
       <div className="grid items-center gap-4 text-center">
         <Title>Gift a Farcaster account</Title>
         <SubTitle level="2" color="textTertiary">
@@ -46,8 +50,8 @@ export default function Sponsor({
         </SubTitle>
       </div>
 
-      {address?.toLowerCase() === recipient.toLowerCase() && (
-        <PurpleHelper className="max-w-sm">
+      {viewerRequesterMatch && ownedFid === 0n && (
+        <PurpleHelper className="max-w-sm" showIcon={false}>
           <span>
             Send this page to the person you want to sponsor your Farcaster
             account registration
@@ -71,10 +75,30 @@ export default function Sponsor({
 
         if (ownedFid && ownedFid > 0n) {
           return (
-            <div className="w-fit">
+            <div className="grid gap-3 w-fit">
               <PurpleHelper>
-                This address already has an account (FID #{Number(ownedFid)})
+                This address already has an account. Try a client!
               </PurpleHelper>
+
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button
+                  as="a"
+                  href="https://flink.fyi/"
+                  target="_blank"
+                  colorStyle="purplePrimary"
+                >
+                  flink.fyi
+                </Button>
+
+                <Button
+                  as="a"
+                  href="https://farcord.com/"
+                  target="_blank"
+                  colorStyle="purpleSecondary"
+                >
+                  farcord.com
+                </Button>
+              </div>
             </div>
           )
         }
