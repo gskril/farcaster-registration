@@ -1,6 +1,7 @@
 'use client'
 
-import { Button, Helper, Typography } from '@ensdomains/thorin'
+import { Button, Helper } from '@ensdomains/thorin'
+import { usePlausible } from 'next-plausible'
 import {
   Address,
   useContractRead,
@@ -24,6 +25,7 @@ type Props = {
 export function Register({ name, address, deadline, signature }: Props) {
   const { chain } = useNetwork()
   const gifterContract = useGifterContract(chain?.id)
+  const plausible = usePlausible()
 
   const extraWei = 60000000000000n
 
@@ -52,7 +54,11 @@ export function Register({ name, address, deadline, signature }: Props) {
   })
 
   const tx = useContractWrite(prepare.config)
-  const receipt = useWaitForTransaction(tx.data)
+
+  const receipt = useWaitForTransaction({
+    hash: tx.data?.hash,
+    onSuccess: () => plausible('Registration'),
+  })
 
   return (
     <div>

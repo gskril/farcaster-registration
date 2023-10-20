@@ -1,3 +1,4 @@
+import { usePlausible } from 'next-plausible'
 import { useMemo, useState } from 'react'
 // @ts-ignore
 import { experimental_useFormState as useFormState } from 'react-dom'
@@ -24,6 +25,7 @@ const initialState = {
 export function Sign({ connectedAddress }: { connectedAddress: Address }) {
   const { chain } = useNetwork()
   const ID_REGISTRY_EIP_712_DOMAIN = useIdRegistryEip712Domain(chain?.id)
+  const plausible = usePlausible()
 
   // 7 days from now
   const deadline = useMemo(
@@ -43,6 +45,7 @@ export function Sign({ connectedAddress }: { connectedAddress: Address }) {
     types: SignatureTypes,
     primaryType: 'Register',
     message,
+    onSuccess: () => plausible('Signature'),
   })
 
   const [formState, formAction] = useFormState(createKv, initialState)

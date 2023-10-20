@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import { WagmiConfig } from 'wagmi'
 import { ThorinGlobalStyles, lightTheme } from '@ensdomains/thorin'
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
+import { WagmiConfig } from 'wagmi'
 
 import StyledComponentsRegistry from '@/lib/styled-components-registry'
 import { chains, wagmiConfig } from '@/lib/web3'

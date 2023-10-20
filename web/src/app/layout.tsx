@@ -1,5 +1,6 @@
 import '@rainbow-me/rainbowkit/styles.css'
 import type { Metadata } from 'next'
+import PlausibleProvider from 'next-plausible'
 
 import { ClientProviders } from '@/lib/providers'
 
@@ -71,6 +72,10 @@ export default function RootLayout({
 }) {
   return (
     <html>
+      <head>
+        <PlausibleProvider domain="gift.fcstr.xyz" trackOutboundLinks />
+      </head>
+
       <body>
         <ClientProviders>
           <div
