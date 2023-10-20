@@ -8,4 +8,4 @@ Flow:
 
 - Alice signs a message, effectively creating a request for someone to sponsor their registration fee
   - This is stored in Vercel KV with Alice's address as the key and the stringified signature/deadline as the value
-- Bob enters the URL `/sponsor/{address}` which pulls the necessary signature from KV storage and prepares [Bundler](https://optimistic.etherscan.io/address/0x00000000fc94856f3967b047325f88d47bc225d0) transaction
+- Bob enters the URL `/sponsor/{address}` which pulls Alice's signature from KV storage and prepares a transaction on the [FcGifter.sol](./contracts/README.md) contract
