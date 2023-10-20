@@ -67,18 +67,29 @@ export function Register({ name, address, deadline, signature }: Props) {
           return (
             <div className="grid gap-4">
               <PurpleHelper>
-                Success! {name} can now use their account with a client like
-                flink
+                Success! {name} can now use their account with a range of
+                clients.
               </PurpleHelper>
 
-              <Button
-                as="a"
-                href="https://flink.fyi/"
-                target="_blank"
-                colorStyle="purplePrimary"
-              >
-                Go to flink
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button
+                  as="a"
+                  href="https://flink.fyi/"
+                  target="_blank"
+                  colorStyle="purplePrimary"
+                >
+                  flink.fyi
+                </Button>
+
+                <Button
+                  as="a"
+                  href="https://farcord.com/"
+                  target="_blank"
+                  colorStyle="purpleSecondary"
+                >
+                  farcord.com
+                </Button>
+              </div>
             </div>
           )
         }
