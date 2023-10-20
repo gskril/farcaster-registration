@@ -161,7 +161,7 @@ const abi = [
 
 export function useGifterContract(chainId: number | undefined) {
   const optimismAddr = '0x56184a5627523f2062de73f3ac5754e6fc7cc328' as Address
-  const hardhatAddr = '0x1429859428c0abc9c2c47c8ee9fbaf82cfa0f20f' as Address
+  const hardhatAddr = '0x162a433068f51e18b7d13932f27e66a3f99e6890' as Address
 
   return useMemo(
     () => ({
