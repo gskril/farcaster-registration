@@ -5,26 +5,49 @@ import { hardhat } from 'viem/chains'
 const abi = [
   {
     inputs: [
-      { internalType: 'uint8', name: '_feePercentage', type: 'uint8' },
-      { internalType: 'address', name: '_initialOwner', type: 'address' },
-      { internalType: 'address', name: '_bundlerAddress', type: 'address' },
+      {
+        internalType: 'uint8',
+        name: '_feePercentage',
+        type: 'uint8',
+      },
       {
         internalType: 'address',
-        name: '_storageRegistryAddress',
+        name: '_initialOwner',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_bundlerAddress',
         type: 'address',
       },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
-  { inputs: [], name: 'InvalidPayment', type: 'error' },
   {
-    inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
+    inputs: [],
+    name: 'InvalidPayment',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+    ],
     name: 'OwnableInvalidOwner',
     type: 'error',
   },
   {
-    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
     name: 'OwnableUnauthorizedAccount',
     type: 'error',
   },
@@ -50,35 +73,77 @@ const abi = [
   {
     inputs: [],
     name: 'bundler',
-    outputs: [{ internalType: 'contract IBundler', name: '', type: 'address' }],
+    outputs: [
+      {
+        internalType: 'contract IBundler',
+        name: '',
+        type: 'address',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: 'units', type: 'uint256' }],
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'extraStorage',
+        type: 'uint256',
+      },
+    ],
     name: 'fee',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'feePercentage',
-    outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
+    outputs: [
+      {
+        internalType: 'uint8',
+        name: '',
+        type: 'uint8',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'owner',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: 'units', type: 'uint256' }],
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'extraStorage',
+        type: 'uint256',
+      },
+    ],
     name: 'price',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
@@ -86,10 +151,26 @@ const abi = [
     inputs: [
       {
         components: [
-          { internalType: 'address', name: 'to', type: 'address' },
-          { internalType: 'address', name: 'recovery', type: 'address' },
-          { internalType: 'uint256', name: 'deadline', type: 'uint256' },
-          { internalType: 'bytes', name: 'sig', type: 'bytes' },
+          {
+            internalType: 'address',
+            name: 'to',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'recovery',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'deadline',
+            type: 'uint256',
+          },
+          {
+            internalType: 'bytes',
+            name: 'sig',
+            type: 'bytes',
+          },
         ],
         internalType: 'struct IBundler.RegistrationParams',
         name: 'registration',
@@ -97,19 +178,51 @@ const abi = [
       },
       {
         components: [
-          { internalType: 'uint32', name: 'keyType', type: 'uint32' },
-          { internalType: 'bytes', name: 'key', type: 'bytes' },
-          { internalType: 'uint8', name: 'metadataType', type: 'uint8' },
-          { internalType: 'bytes', name: 'metadata', type: 'bytes' },
-          { internalType: 'uint256', name: 'deadline', type: 'uint256' },
-          { internalType: 'bytes', name: 'sig', type: 'bytes' },
+          {
+            internalType: 'uint32',
+            name: 'keyType',
+            type: 'uint32',
+          },
+          {
+            internalType: 'bytes',
+            name: 'key',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint8',
+            name: 'metadataType',
+            type: 'uint8',
+          },
+          {
+            internalType: 'bytes',
+            name: 'metadata',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'deadline',
+            type: 'uint256',
+          },
+          {
+            internalType: 'bytes',
+            name: 'sig',
+            type: 'bytes',
+          },
         ],
         internalType: 'struct IBundler.SignerParams[]',
         name: 'signers',
         type: 'tuple[]',
       },
-      { internalType: 'uint256', name: 'storageUnits', type: 'uint256' },
-      { internalType: 'uint256', name: 'extraWei', type: 'uint256' },
+      {
+        internalType: 'uint256',
+        name: 'extraStorage',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'extraWei',
+        type: 'uint256',
+      },
     ],
     name: 'register',
     outputs: [],
@@ -124,27 +237,26 @@ const abi = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint8', name: '_feePercentage', type: 'uint8' }],
+    inputs: [
+      {
+        internalType: 'uint8',
+        name: '_feePercentage',
+        type: 'uint8',
+      },
+    ],
     name: 'setFeePercentage',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'storageRegistry',
-    outputs: [
+    inputs: [
       {
-        internalType: 'contract IStorageRegistry',
-        name: '',
+        internalType: 'address',
+        name: 'newOwner',
         type: 'address',
       },
     ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
     name: 'transferOwnership',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -160,8 +272,8 @@ const abi = [
 ] as const
 
 export function useGifterContract(chainId: number | undefined) {
-  const optimismAddr = '0x56184a5627523f2062de73f3ac5754e6fc7cc328' as Address
-  const hardhatAddr = '0x162a433068f51e18b7d13932f27e66a3f99e6890' as Address
+  const optimismAddr = '0xf4156782fbfa7d35A0Ed822d6666788BF95047B9' as Address
+  const hardhatAddr = '0x922d6956c99e12dfeb3224dea977d0939758a1fe' as Address
 
   return useMemo(
     () => ({

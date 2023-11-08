@@ -1,6 +1,6 @@
 # FcGifter
 
-A simple smart contract that registers Farcaster accounts via [the bundler](https://optimistic.etherscan.io/address/0x00000000fc94856f3967b047325f88d47bc225d0) with a few modifications:
+A simple smart contract that registers Farcaster accounts via [the bundler](https://optimistic.etherscan.io/address/0x00000000FC04c910A0b5feA33b03E0447AD0B0aA) with a few modifications:
 
 - A 10% fee is added to the registration cost
 - The `regster` function allows for a sender to transfer some additional ETH to a recipient so they don't have to worry about gas costs for the first (few) signers they create
@@ -35,4 +35,4 @@ In a third terminal window, run the [web app](../web/README.md) and connect to `
 
 ## Deployments
 
-- OP Mainnet: [0x56184a5627523f2062de73f3ac5754e6fc7cc328](https://optimistic.etherscan.io/address/0x56184a5627523f2062de73f3ac5754e6fc7cc328)
+- OP Mainnet: [0xf4156782fbfa7d35A0Ed822d6666788BF95047B9](https://optimistic.etherscan.io/address/0xf4156782fbfa7d35A0Ed822d6666788BF95047B9)

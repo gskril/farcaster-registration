@@ -32,7 +32,7 @@ export function Register({ name, address, deadline, signature }: Props) {
   const { data: storagePrice } = useContractRead({
     ...gifterContract,
     functionName: 'price',
-    args: [1n],
+    args: [0n],
   })
 
   const prepare = usePrepareContractWrite({
@@ -48,10 +48,14 @@ export function Register({ name, address, deadline, signature }: Props) {
         sig: signature,
       }, // registration
       [], // signers
-      1n, // storage units
+      0n, // extra storage units
       extraWei, // extra wei
     ],
   })
+
+  if (prepare.error) {
+    console.error(prepare.error)
+  }
 
   const tx = useContractWrite(prepare.config)
 
