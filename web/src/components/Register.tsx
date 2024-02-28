@@ -115,7 +115,7 @@ export function Register({ name, address, deadline, signature }: Props) {
               ) : receipt.isLoading ? (
                 <>Transaction processing</>
               ) : (
-                <>Register for ~$7.77</>
+                <>Register for ~$3.33</>
               )}
             </Button>
 
